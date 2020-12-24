@@ -19,6 +19,7 @@
 package ezrest
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -50,6 +51,17 @@ func TestApiGET(t *testing.T) {
 	if response.Data[0].Id != "1" {
 		t.Errorf("Expected response.Data[0].Id to be 1, got %s instead", response.Data[0].Id)
 	}
+}
+
+// TestApiGET will test rest.Get function is working as expected
+func TestApiGET404(t *testing.T) {
+	var response getResponse
+	_, err := Get("http://dummy.restapiexample.com/api/v1/eoyees", &response)
+	if err == nil {
+		t.Errorf("We expect an error, got nothing")
+		return
+	}
+	fmt.Println(err)
 }
 
 type postBody struct {
