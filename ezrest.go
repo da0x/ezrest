@@ -21,6 +21,7 @@ package ezrest
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -68,6 +69,9 @@ func Get(url string, response interface{}) (int, error) {
 		return resp.StatusCode, err
 	}
 	resp.Body.Close()
+	if resp.StatusCode >= 300 {
+		return resp.StatusCode, fmt.Errorf("ezrest.Get() %v:%v", resp.StatusCode, string(read))
+	}
 	err = json.Unmarshal(read, response)
 	if err != nil {
 		return resp.StatusCode, err
