@@ -45,6 +45,9 @@ func DefaultHeaders() map[string]string {
 	return headers
 }
 
+// Verbose will turn on / off logging debugging information.
+var Verbose = false
+
 // Get calls a url and parses the json output and unmarshals it into a struct. It returns
 // the http response code (if one is available) and an optional error.
 // rest.RequestHeaders will be used for the request.
@@ -74,6 +77,9 @@ func Get(url string, response interface{}) (int, error) {
 	}
 	err = json.Unmarshal(read, response)
 	if err != nil {
+		if Verbose {
+			log.Println("Response:", string(read))
+		}
 		return resp.StatusCode, err
 	}
 	return resp.StatusCode, nil
