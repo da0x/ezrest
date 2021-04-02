@@ -53,6 +53,9 @@ var Verbose = false
 // the http response code (if one is available) and an optional error.
 // rest.RequestHeaders will be used for the request.
 func Get(url string, response interface{}) (int, error) {
+	if Verbose {
+		log.Println("ezrest.Get(", url, ")")
+	}
 	request, err := http.NewRequest("GET", url, bytes.NewReader([]byte{}))
 	if err != nil {
 		return 0, err
@@ -91,6 +94,9 @@ func Get(url string, response interface{}) (int, error) {
 // function will also unmarshal the reponse in its response struct.
 // rest.RequestHeaders will be used for the request.
 func Post(url string, body, response interface{}) (int, error) {
+	if Verbose {
+		log.Println("ezrest.Post(", url, ")")
+	}
 	requestBody, err := json.Marshal(body)
 	if err != nil {
 		return 0, err
