@@ -118,11 +118,10 @@ func Post(url string, body, response interface{}) (int, error) {
 	if err != nil {
 		return resp.StatusCode, err
 	}
-	println(string(read))
 	if len(read) > 0 && response != nil {
 		err = json.Unmarshal(read, response)
 		if err != nil {
-			return resp.StatusCode, err
+			return resp.StatusCode, fmt.Errorf("Unmarshal error: %v, Response Body: %v", err, string(read))
 		}
 	}
 	return resp.StatusCode, nil
