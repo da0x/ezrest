@@ -53,5 +53,10 @@ if err != nil {
     log.Fatalln(err)
 }
 ```
+Or you can create your own headers from scratch:
+```
+headers := make(map[string]string)
+... Get(..., headers, ...)
+```
 ## Maintainer
 Daher Alfawares
