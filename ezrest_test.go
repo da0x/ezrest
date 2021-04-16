@@ -36,7 +36,7 @@ type data struct {
 // TestApiGET will test rest.Get function is working as expected
 func TestApiGET(t *testing.T) {
 	var response getResponse
-	statusCode, err := Get("http://dummy.restapiexample.com/api/v1/employees", &response)
+	statusCode, err := Get("http://dummy.restapiexample.com/api/v1/employees", ezrest.DefaultHeaders(), &response)
 	if err != nil {
 		t.Errorf("Got err %v while trying rest.Get():", err)
 		return
@@ -56,7 +56,7 @@ func TestApiGET(t *testing.T) {
 // TestApiGET will test rest.Get function is working as expected
 func TestApiGET404(t *testing.T) {
 	var response getResponse
-	_, err := Get("http://dummy.restapiexample.com/api/v1/eoyees", &response)
+	_, err := Get("http://dummy.restapiexample.com/api/v1/eoyees", ezrest.DefaultHeaders(), &response)
 	if err == nil {
 		t.Errorf("We expect an error, got nothing")
 		return
@@ -88,7 +88,7 @@ func TestApiPOST(t *testing.T) {
 	body.Age = "25"
 
 	var response postResponse
-	statusCode, err := Post("http://dummy.restapiexample.com/api/v1/create", body, &response)
+	statusCode, err := Post("http://dummy.restapiexample.com/api/v1/create", ezrest.DefaultHeaders(), body, &response)
 	if err != nil {
 		t.Errorf("Got err %v while trying to use api post", err)
 		return
