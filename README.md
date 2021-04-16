@@ -18,24 +18,40 @@ var o struct {
     UserId int `json:"user_id"`
     Name string `json:"name"`
 }
-code, err := ezrest.Get("https://example.com/json", &o)
+code, err := ezrest.Get("https://example.com/json", ezrest.DefaultHeaders(), &o)
 if err != nil {
     log.Fatalln(err)
 }
 println("response code:", code)
 println("response object:", o)
 ```
+## Post
+Example:
+```
+var request struct {
+    Name string `json:"name"`
+}
+var response struct {
+    Id int `json:"id"`
+    Name string `json:"name"`
+}
+code, err := ezrest.Post("https://example.com/json", ezrest.DefaultHeaders(), request, &response)
+if err != nil {
+    log.Fatalln(err)
+}
+println("response code:", code)
+println("response object:", response)
+```
 ## Request Headers
-By default, this library will send default headers to indicate that the request content
-type is json and to close the connection.
-You can reset or clear out the request headers by directly manipulating or replacing ezrest.RequestHeaders.
-Example
+Request headers have to explicitly defined. You can use ezrest.DefaultHeaders as shown above or
+you can add your own. Here's an example:
 ```
 headers := ezrest.DefaultHeaders()
 headers["new-header"] = "value"
-ezrest.RequestHeaders = headers
-...
-_, err := ezrest.Get("...", &o)
+code, err := ezrest.Get("https://example.com/json", headers, &o)
+if err != nil {
+    log.Fatalln(err)
+}
 ```
 ## Maintainer
-Justin Gehr
+Daher Alfawares
