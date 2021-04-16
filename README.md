@@ -43,7 +43,7 @@ println("response code:", code)
 println("response object:", response)
 ```
 ## Request Headers
-Request headers have to explicitly defined. You can use ezrest.DefaultHeaders as shown above or
+Request headers have to be explicitly defined. You can use ezrest.DefaultHeaders as shown above or
 you can add your own. Here's an example:
 ```
 headers := ezrest.DefaultHeaders()
