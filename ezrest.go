@@ -28,17 +28,12 @@ import (
 	"time"
 )
 
-// RequestHeaders is a map which contains the headers that will be applied to each rest command.
-// Default value is = DefaultHeaders().
-var RequestHeaders = DefaultHeaders()
-
 // DefaultHeaders returns a map with the default headers. You can use SetDefaultHeaders()
-// to provide custom values.
-// To add new headers while preserving the default headers use something like this:
+// as an initial value and then provide custom values.
 //
 // headers := rest.DefaultHeaders()
 // headers["new-header"] = "value"
-// rest.RequestHeaders = headers
+// Get(..., headers, ...)
 func DefaultHeaders() map[string]string {
 	headers := make(map[string]string)
 	headers["Content-Type"] = "application/json"
@@ -51,8 +46,7 @@ var Verbose = false
 
 // Get calls a url and parses the json output and unmarshals it into a struct. It returns
 // the http response code (if one is available) and an optional error.
-// rest.RequestHeaders will be used for the request.
-func Get(url string, response interface{}) (int, error) {
+func Get(url string, headers map[string]string, response interface{}) (int, error) {
 	if Verbose {
 		log.Println("ezrest.Get(", url, ")")
 	}
@@ -60,7 +54,7 @@ func Get(url string, response interface{}) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	for key, value := range RequestHeaders {
+	for key, value := range headers {
 		request.Header.Set(key, value)
 	}
 	var client = &http.Client{Timeout: 30 * time.Second}
@@ -92,8 +86,7 @@ func Get(url string, response interface{}) (int, error) {
 // Post calls a url with the POST method and sends the provided body. It will
 // return a response code (if one is available) and an optional error. This
 // function will also unmarshal the reponse in its response struct.
-// rest.RequestHeaders will be used for the request.
-func Post(url string, body, response interface{}) (int, error) {
+func Post(url string, headers map[string]string, body, response interface{}) (int, error) {
 	if Verbose {
 		log.Println("ezrest.Post(", url, ")")
 	}
@@ -105,7 +98,7 @@ func Post(url string, body, response interface{}) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	for key, value := range RequestHeaders {
+	for key, value := range headers {
 		request.Header.Set(key, value)
 	}
 	var client = &http.Client{Timeout: 30 * time.Second}
@@ -129,8 +122,7 @@ func Post(url string, body, response interface{}) (int, error) {
 
 // PostAcceptOctetStream will attempt to post the request to the given url and will give back
 // the response from the server as a string.
-// rest.RequestHeaders will be used for the request.
-func PostAcceptOctetStream(url string, body interface{}, response *string) (int, error) {
+func PostAcceptOctetStream(url string, headers map[string]string, body interface{}, response *string) (int, error) {
 	requestBody, err := json.Marshal(body)
 	if err != nil {
 		return 0, err
@@ -139,7 +131,7 @@ func PostAcceptOctetStream(url string, body interface{}, response *string) (int,
 	if err != nil {
 		return 0, err
 	}
-	for key, value := range RequestHeaders {
+	for key, value := range headers {
 		request.Header.Set(key, value)
 	}
 	var client = &http.Client{Timeout: 30 * time.Second}
