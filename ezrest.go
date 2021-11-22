@@ -1,5 +1,5 @@
 //
-//   Copyright 2020 Justin Gehr
+//   Copyright 2020 Justin Gehr, Daher Alfawares
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License
@@ -118,6 +118,18 @@ func Post(url string, headers map[string]string, body, response interface{}) (in
 		}
 	}
 	return resp.StatusCode, nil
+}
+
+// MustPost calls Post and will handle any errors internally. If the call to Post()
+// fails, then MustPost will exit the program and display an error message.
+// If it succeeds it will return the http status code back as an int.
+// Check net/http for status codes.
+func MustPost(url string, headers map[string]string, body, response interface{}) int {
+    code, err := Post(url, headers, body, response)
+    if err != nil {
+        log.Fatalln("ezrest.MustPost(", url, headers, body, "):", err)                                                                         
+    }
+    return code
 }
 
 // PostAcceptOctetStream will attempt to post the request to the given url and will give back
