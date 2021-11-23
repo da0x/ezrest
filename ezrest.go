@@ -94,7 +94,7 @@ func PostOrPut(method, url string, headers map[string]string, body, response int
 	if err != nil {
 		return 0, err
 	}
-	request, err := http.NewRequest("POST", url, bytes.NewReader(requestBody))
+	request, err := http.NewRequest(method, url, bytes.NewReader(requestBody))
 	if err != nil {
 		return 0, err
 	}
