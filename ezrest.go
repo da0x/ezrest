@@ -83,10 +83,10 @@ func Get(url string, headers map[string]string, response interface{}) (int, erro
 	return resp.StatusCode, nil
 }
 
-// Post calls a url with the POST method and sends the provided body. It will
-// return a response code (if one is available) and an optional error. This
-// function will also unmarshal the reponse in its response struct.
-func Post(url string, headers map[string]string, body, response interface{}) (int, error) {
+// PostOrPut calls a url with the POST or PUT method as specified in the first parameter
+// and sends the provided body. It will return a response code (if one is available)
+// and an optional error. This function will also unmarshal the reponse in its response struct.
+func PostOrPut(method, url string, headers map[string]string, body, response interface{}) (int, error) {
 	if Verbose {
 		log.Println("ezrest.Post(", url, ")")
 	}
@@ -120,6 +120,13 @@ func Post(url string, headers map[string]string, body, response interface{}) (in
 	return resp.StatusCode, nil
 }
 
+// Post calls a url with the POST method and sends the provided body. It will
+// return a response code (if one is available) and an optional error. This
+// function will also unmarshal the reponse in its response struct.
+func Post(url string, headers map[string]string, body, response interface{}) (int, error) {
+	return PostOrPut("POST", url, headers, body, response)
+}
+
 // MustPost calls Post and will handle any errors internally. If the call to Post()
 // fails, then MustPost will exit the program and display an error message.
 // If it succeeds it will return the http status code back as an int.
@@ -128,6 +135,25 @@ func MustPost(url string, headers map[string]string, body, response interface{})
     code, err := Post(url, headers, body, response)
     if err != nil {
         log.Fatalln("ezrest.MustPost(", url, headers, body, "):", err)                                                                         
+    }
+    return code
+}
+
+// Put calls a url with the PUT method and sends the provided body. It will
+// return a response code (if one is available) and an optional error. This
+// function will also unmarshal the reponse in its response struct.
+func Put(url string, headers map[string]string, body, response interface{}) (int, error) {
+	return PostOrPut("PUT", url, headers, body, response)
+}
+
+// MustPut calls Put and will handle any errors internally. If the call to Put()
+// fails, then MustPut will exit the program and display an error message.
+// If it succeeds it will return the http status code back as an int.
+// Check net/http for status codes.
+func MustPut(url string, headers map[string]string, body, response interface{}) int {
+    code, err := Put(url, headers, body, response)
+    if err != nil {
+        log.Fatalln("ezrest.MustPut(", url, headers, body, "):", err)                                                                         
     }
     return code
 }
